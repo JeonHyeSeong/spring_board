@@ -1,0 +1,26 @@
+2023-10-04
+-- database 설정
+create database springtest;
+
+-- user 설정
+create user springUser@localhost
+identified by 'mysql';
+
+-- 권한부여 
+grant all privileges on springtest.*to
+springUser@localhost identified by
+'mysql';
+
+-- 변경내용 메모리에 반영
+flush privileges;
+
+-- 게시판 생성
+create table board(
+bno int not null auto_increment,
+title varchar(200),
+content text,
+writer varchar(100),
+isDel varchar(10) default 'N',
+registerDate datetime default now(),
+read_count int,
+primary key(bno));
