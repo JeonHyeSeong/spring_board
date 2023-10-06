@@ -24,3 +24,15 @@ isDel varchar(10) default 'N',
 registerDate datetime default now(),
 read_count int,
 primary key(bno));
+
+-- 2023-10-06 
+-- member table 생성
+create table member(
+id varchar(100) not null,
+pw varchar(100) not null,
+name varchar(100),
+email varchar(100),
+home varchar(100),
+age int,
+reg_date datetime default now(),
+primary key(id));

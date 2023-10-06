@@ -14,30 +14,43 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">Menu</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
+        <c:if test="${ses.id eq null }">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Login</a>
+          <a class="nav-link active" aria-current="page" href="/member/login">Login</a>
         </li>
+        </c:if>
+        <c:if test="${ses.id ne null }">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Logout</a>
+          <a class="nav-link active" aria-current="page" href="/member/logout">Logout</a>
         </li>
+        </c:if>
+        <c:if test="${ses.id eq null }">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Sign Up</a>
+          <a class="nav-link active" aria-current="page" href="/member/signup">Sign Up</a>
         </li>
+        </c:if>
+        <c:if test="${ses.id ne null }">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/board/register">REG</a>
         </li>
+        </c:if>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/board/list">Board List</a>
         </li>
+        <c:if test="${ses.id ne null }">
+        <li class="nav-item">
+          <a class="nav-link active" href="/member/modify">${ses.id }(${ses.email })님 로그인 하였습니다.</a>
+        </li>
+        </c:if>
         <!-- <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
         </li>
