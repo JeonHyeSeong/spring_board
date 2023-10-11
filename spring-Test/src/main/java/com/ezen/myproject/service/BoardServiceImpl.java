@@ -2,11 +2,12 @@ package com.ezen.myproject.service;
 
 import java.util.List;
 
-import javax.inject.Inject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ezen.myproject.domain.BoardVO;
+import com.ezen.myproject.domain.PagingVO;
 import com.ezen.myproject.repository.BoardDAO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BoardServiceImpl implements BoardService{
 	
-	@Inject
 	private BoardDAO bdao;
+	
+	@Autowired
+	public BoardServiceImpl(BoardDAO bdao) {
+		this.bdao = bdao;
+	}
 
 	@Override
 	public int register(BoardVO bvo) {
@@ -25,9 +30,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<BoardVO> getList() {
+	public List<BoardVO> getList(PagingVO pgvo) {
 		log.info("list check 2");
-		return bdao.getList();
+		return bdao.getList(pgvo);
 	}
 
 	@Override
@@ -50,6 +55,12 @@ public class BoardServiceImpl implements BoardService{
 	public int remove(int bno) {
 		log.info("remove check 2");
 		return bdao.remove(bno);
+	}
+
+	@Override
+	public int getTotalCount(PagingVO pgvo) {
+		
+		return bdao.totalCount(pgvo);
 	}
 
 }

@@ -36,3 +36,13 @@ home varchar(100),
 age int,
 reg_date datetime default now(),
 primary key(id));
+
+-- 2023-10-10
+-- comment table 생성
+create table comment(
+cno int auto_increment not null,
+bno int not null,
+writer varchar(100),
+content varchar(500),
+reg_date datetime default now(),
+primary key(cno));

@@ -2,8 +2,7 @@ package com.ezen.myproject.controller;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ezen.myproject.domain.BoardVO;
+import com.ezen.myproject.domain.PagingVO;
+import com.ezen.myproject.handler.PagingHandler;
 import com.ezen.myproject.service.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class BoardController {
 	
-	@Inject
 	private BoardService bsv;
+	
+	@Autowired
+	public BoardController(BoardService bsv) {
+		this.bsv = bsv;
+	}
 	
 	@GetMapping("/register")
 	public String boardRegisterGet() {
@@ -39,10 +44,15 @@ public class BoardController {
 	}
 	
 	@GetMapping("/list")
-	public String list(Model model) {
-		List<BoardVO> list = bsv.getList();
-		log.info(">>> getList > "+list);
+	public String list(Model model, PagingVO pgvo) {
+		log.info(">>> PagingVO >>> {}", pgvo);
+		// getList(pgvo);
+		List<BoardVO> list = bsv.getList(pgvo);
+//		log.info(">>> getList > "+list);
 		model.addAttribute("list",list);
+		int totalCount = bsv.getTotalCount(pgvo);
+		PagingHandler ph = new PagingHandler(pgvo, totalCount);
+		model.addAttribute("ph", ph);
 		return "/board/list";
 	}
 	

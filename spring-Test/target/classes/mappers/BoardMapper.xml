@@ -9,7 +9,10 @@
 	</insert>
 	
 	<select id="getList" resultType="com.ezen.myproject.domain.BoardVO">
-		select * from board where isDel = 'N' order by bno desc
+		select * from board where isDel = 'N'
+		<include refid="search"></include>
+		order by bno desc
+		limit #{pageStart}, #{qty}
 	</select>
 	
 	<select id="getDetail" parameterType="int" resultType="com.ezen.myproject.domain.BoardVO">
@@ -27,4 +30,34 @@
 	<update id="remove" parameterType="int">
 		update board set isDel = 'y' where bno = #{bno}
 	</update>
+	
+	<select id="totalCount" parameterType="com.ezen.myproject.domain.PagingVO" resultType="int">
+		select count(*) from board
+		where isDel = 'N'
+		<include refid="search"></include>
+	</select>
+	
+	<sql id="search">
+		<if test="type != null">
+			<trim prefix="and (" suffix=")" prefixOverrides="OR">
+				<foreach collection="typeToArray" item="type">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 't'.toString()">
+								title like concat('%',#{keyword},'%')
+							</when>
+							<when test="type == 'w'.toString()">
+								writer like concat('%',#{keyword},'%')
+							</when>
+							<when test="type == 'c'.toString()">
+							 	content like concat('%',#{keyword},'%')
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+		</if>
+	</sql>
+	
+	
 </mapper>
