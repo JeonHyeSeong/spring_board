@@ -65,7 +65,7 @@ public class CommentController {
 				: new ResponseEntity<String>("0",HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@DeleteMapping(value = "/{cno}")
+	@DeleteMapping(value = "/{cno}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> remove(@PathVariable("cno") int cno){
 		log.info(">> delete cno >> {}",cno);
 		

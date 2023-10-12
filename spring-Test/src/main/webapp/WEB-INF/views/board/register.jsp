@@ -11,11 +11,16 @@
 <jsp:include page="../layout/header.jsp"></jsp:include>
 <h2>게시글 등록</h2>
 <!-- mapping 상태는 get / post가 별도의 mapping을 가짐 -->
-<form action="/board/register" method="post">
+<form action="/board/register" method="post" enctype="multipart/form-data">
 	title : <input type="text" name="title"> <br>
 	writer : <input type="text" name="writer" value="${ses.id }" readonly="readonly"> <br>
 	content : <textarea rows="5" cols="50" name="content"></textarea> <br>
-	<button type="submit">등록</button>
+	file : <input type="file" id="file" name="files" multiple="multiple" style="display: none">
+	<button type="button" id="trigger">FileUpload</button> <br>
+	<div id="fileZone">
+	
+	</div>
+	<button type="submit" id="regBtn">등록</button>
 </form>
 <br>
 <a href="/">
@@ -25,6 +30,7 @@
 	<button type="button">리스트</button>
 </a>
 
+<script type="text/javascript" src="/resources/js/boardRegister.js"></script>
 <jsp:include page="../layout/footer.jsp"></jsp:include>
 </body>
 </html>
