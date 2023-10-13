@@ -8,12 +8,24 @@
 		values(#{title}, #{writer}, #{content})
 	</insert>
 	
+	<select id="selectBno" resultType="int">
+		select max(bno) from board
+	</select>
+	
 	<select id="getList" resultType="com.ezen.myproject.domain.BoardVO">
 		select * from board where isDel = 'N'
 		<include refid="search"></include>
 		order by bno desc
 		limit #{pageStart}, #{qty}
 	</select>
+	
+	<update id="commentcount">
+		update board set commentCount = (select count(cno) from comment where bno = board.bno)
+	</update>
+	
+	<update id="fileCount">
+		update board set fileCount = #{cntFile} where bno = #{bno}
+	</update>
 	
 	<select id="getDetail" parameterType="int" resultType="com.ezen.myproject.domain.BoardVO">
 		select * from board where bno = #{bno}

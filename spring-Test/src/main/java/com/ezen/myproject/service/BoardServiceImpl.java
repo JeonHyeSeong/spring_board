@@ -6,9 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ezen.myproject.domain.BoardDTO;
 import com.ezen.myproject.domain.BoardVO;
+import com.ezen.myproject.domain.FileVO;
 import com.ezen.myproject.domain.PagingVO;
 import com.ezen.myproject.repository.BoardDAO;
+import com.ezen.myproject.repository.FileDAO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,20 +21,47 @@ public class BoardServiceImpl implements BoardService{
 	
 	private BoardDAO bdao;
 	
+	private FileDAO fdao;
+	
 	@Autowired
-	public BoardServiceImpl(BoardDAO bdao) {
+	public BoardServiceImpl(BoardDAO bdao, FileDAO fdao) {
 		this.bdao = bdao;
+		this.fdao = fdao;
 	}
 
 	@Override
-	public int register(BoardVO bvo) {
+	public int register(BoardDTO bdto) {
 		log.info("register check 2");
-		return bdao.insert(bvo);
+		// 기존 게시글에 대한 내용을 DB에 저장 같은 내용을 저장
+		int isOk = bdao.insert(bdto.getBvo());
+		// ---파일 저장 라인---
+		if(bdto.getFlist() == null) {
+			// 파일의 값이 null이면 저장 없음.
+			isOk *= 1; // 성공
+		}else {
+			// bvo에 값이 들어가고, 파일의 개수가 있다면...
+			if(isOk > 0 && bdto.getFlist().size() > 0) {
+				// fvo의 bno는 아직 설정되기 전.
+				// 현재 시점에서 bno는 아직 결정되지 않음. => DB insert ai에 의해 자동생성
+				int bno = bdao.selectBno(); // 방금 저장된 bno 가져오기
+				// flist의 모든 FileVO에 방금 가져온 bno를 set
+				for(FileVO fvo : bdto.getFlist()) {
+					fvo.setBno(bno);
+					log.info(">>> fvo >> {}",fvo);
+					// 파일 저장
+					isOk *= fdao.insertFile(fvo);
+				}
+				int cntFile = bdto.getFlist().size();
+				bdao.fileCount(bno, cntFile);
+			}
+		}
+		return isOk;
 	}
 
 	@Override
 	public List<BoardVO> getList(PagingVO pgvo) {
 		log.info("list check 2");
+		bdao.commentcount();
 		return bdao.getList(pgvo);
 	}
 
@@ -62,5 +92,8 @@ public class BoardServiceImpl implements BoardService{
 		
 		return bdao.totalCount(pgvo);
 	}
+
+
+	
 
 }

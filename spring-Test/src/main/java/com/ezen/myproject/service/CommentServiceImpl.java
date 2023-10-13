@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ezen.myproject.domain.CommentVO;
+import com.ezen.myproject.repository.BoardDAO;
 import com.ezen.myproject.repository.CommentDAO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 public class CommentServiceImpl implements CommentService{
 	
 	private CommentDAO cdao;
+	
 
 	@Autowired
-	public CommentServiceImpl(CommentDAO cdao) {
+	public CommentServiceImpl(CommentDAO cdao,BoardDAO bdao) {
 		this.cdao = cdao;
 	}
 
