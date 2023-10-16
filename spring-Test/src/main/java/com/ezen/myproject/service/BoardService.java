@@ -21,4 +21,10 @@ public interface BoardService {
 	int getTotalCount(PagingVO pgvo);
 
 	int register(BoardDTO bdto);
+
+	BoardDTO getDetailFile(int bno);
+
+	int removeFile(String uuid);
+
+	int modifyFile(BoardDTO bdto);
 }

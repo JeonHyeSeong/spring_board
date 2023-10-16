@@ -23,8 +23,12 @@
 		update board set commentCount = (select count(cno) from comment where bno = board.bno)
 	</update>
 	
-	<update id="fileCount">
+	<!-- <update id="fileCount">
 		update board set fileCount = #{cntFile} where bno = #{bno}
+	</update> -->
+	
+	<update id="fileCount">
+		update board set fileCount = (select count(uuid) from file where bno = board.bno)
 	</update>
 	
 	<select id="getDetail" parameterType="int" resultType="com.ezen.myproject.domain.BoardVO">
@@ -42,6 +46,7 @@
 	<update id="remove" parameterType="int">
 		update board set isDel = 'y' where bno = #{bno}
 	</update>
+	 
 	
 	<select id="totalCount" parameterType="com.ezen.myproject.domain.PagingVO" resultType="int">
 		select count(*) from board

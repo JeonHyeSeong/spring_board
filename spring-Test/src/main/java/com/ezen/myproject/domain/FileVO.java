@@ -18,5 +18,5 @@ public class FileVO {
 	private int file_type;
 	private int bno;
 	private long file_size;
-	private String reg_date;
+	private String reg_dete;
 }

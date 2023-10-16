@@ -27,6 +27,8 @@ public interface BoardDAO {
 
 	void commentcount();
 
-	void fileCount(@Param("bno")int bno,@Param("cntFile") int cntFile);
+//	void fileCount(@Param("bno")int bno,@Param("cntFile") int cntFile);
+
+	void fileCount();
 	
 }
